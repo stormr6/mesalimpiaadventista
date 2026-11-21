@@ -7,8 +7,15 @@ const painIcons = [Clock3, Layers3, FileQuestion, RefreshCw, ShoppingBasket, Moo
 const mechanismIcons = [ChefHat, LayoutGrid, ListOrdered, ShoppingBasket];
 const stepIcons = [CreditCard, Download, MonitorSmartphone];
 
+// Links internos rolam a pagina sem mudar a URL (#oferta), para o pixel nao contar como nova visualizacao.
+function scrollTo(e, href) {
+  e.preventDefault();
+  document.getElementById(href.slice(1))?.scrollIntoView();
+}
+
 function CTA({ label = 'QUIERO DEJAR DE IMPROVISAR', href = '#oferta' }) {
-  return <a className="btn" href={href}>{label}<span aria-hidden="true">→</span></a>;
+  const internal = href.startsWith('#');
+  return <a className="btn" href={href} onClick={internal ? (e) => scrollTo(e, href) : undefined}>{label}<span aria-hidden="true">→</span></a>;
 }
 
 function SectionTitle({ children, lead }) {
@@ -234,7 +241,7 @@ export default function App() {
 
       <section className="closing"><div className="content content--780 closing-inner"><p>{content.closing.eyebrow}</p><h2>{content.closing.titleBefore}<em>{content.closing.titleEmphasis}</em></h2><CTA/><small>Material digital en PDF. Pago único.</small></div></section>
     </main>
-    <footer className="footer"><div className="footer-inner"><p>Soporte: {comercial.supportEmail}</p><p className="footer-legal">Producto independiente, sin vínculo con la Iglesia Adventista del Séptimo Día. Material de recetas: no sustituye la orientación médica o nutricional.</p><nav><a href="#">Términos de uso</a><span>•</span><a href="#">Política de privacidad</a></nav></div></footer>
+    <footer className="footer"><div className="footer-inner"><p>Soporte: {comercial.supportEmail}</p><p className="footer-legal">Producto independiente, sin vínculo con la Iglesia Adventista del Séptimo Día. Material de recetas: no sustituye la orientación médica o nutricional.</p><nav><a href="#" onClick={(e) => e.preventDefault()}>Términos de uso</a><span>•</span><a href="#" onClick={(e) => e.preventDefault()}>Política de privacidad</a></nav></div></footer>
   </>;
 }
 
