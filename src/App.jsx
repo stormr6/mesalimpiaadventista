@@ -1,6 +1,6 @@
 import { Children, cloneElement, useEffect, useRef } from 'react';
 import { ArrowLeft, ArrowRight, BadgeCheck, Gift, ChefHat, Check, ChevronLeft, ChevronRight, Clock3, CreditCard, Download, FileCheck2, FileQuestion, Layers3, LayoutGrid, ListOrdered, MonitorSmartphone, Moon, RefreshCw, ShieldCheck, ShoppingBasket, Zap } from 'lucide-react';
-import { content, pages, gallery, comparison, usage, bonuses } from './content.js';
+import { content, pages, gallery, comparison, usage, bonuses, prints, reviews } from './content.js';
 import { comercial } from './comercial.js';
 
 const painIcons = [Clock3, Layers3, FileQuestion, RefreshCw, ShoppingBasket, Moon];
@@ -141,6 +141,54 @@ function Comparison() {
     <input className="comparison-range" type="range" min="8" max="92" defaultValue="48" onInput={update} aria-label="Comparar la receta en texto corrido con el mapa visual" />
   </div>;
 }
+// Vista previa SOLO en el servidor local (npm run dev). En el sitio publicado es false y las secciones vacias no aparecen.
+const PREVIEW = import.meta.env.DEV;
+
+const avatarColors = ['#0e9f55', '#2563eb', '#7c3aed', '#db2777', '#ea580c', '#0891b2'];
+
+function Initial({ name, photo }) {
+  if (photo) return <img className="rv-avatar" src={photo} alt={name} loading="lazy" decoding="async" />;
+  const i = [...name].reduce((s, ch) => s + ch.charCodeAt(0), 0) % avatarColors.length;
+  return <div className="rv-avatar rv-initial" style={{ background: avatarColors[i] }} aria-hidden="true">{name.trim().charAt(0).toUpperCase()}</div>;
+}
+
+function Stars({ n, className }) {
+  return <span className={className} aria-label={`${n} de 5 estrellas`}>{[1, 2, 3, 4, 5].map(i => <span key={i} className={`rv-star${i <= n ? '' : ' rv-star--off'}`} aria-hidden="true">★</span>)}</span>;
+}
+
+function ReviewCard({ r, ...rest }) {
+  return <article className="rv-card" {...rest}>
+    <div className="rv-head"><Initial name={r.name} photo={r.photo} /><div className="rv-meta"><h3>{r.name}</h3><p>{r.date}</p></div></div>
+    <Stars n={r.rating} className="rv-stars" />
+    <p className="rv-copy">{r.text}</p>
+  </article>;
+}
+
+// Nota e contagem sao CALCULADAS das reseñas reais. Faixa em loop so com 5+ reseñas (evita repetir o mesmo cartao).
+function ReviewsSection() {
+  if (reviews.length === 0) {
+    return <section className="reviews-section" aria-label="Vista previa de reseñas">
+      <div className="rv-summary"><span className="rv-score">Vista previa local: aquí aparecen la nota y el número de reseñas reales</span></div>
+      <div className="rv-static">{[1, 2, 3].map(n => <article className="rv-card rv-card--placeholder" key={n}>
+        <div className="rv-head"><div className="rv-avatar rv-initial" style={{ background: '#cbd5e1' }} aria-hidden="true">N</div><div className="rv-meta"><h3>Nombre</h3><p>Fecha</p></div></div>
+        <Stars n={0} className="rv-stars" />
+        <p className="rv-copy">Aquí va la reseña real de un cliente, con su permiso.</p>
+      </article>)}</div>
+    </section>;
+  }
+  const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+  const loop = reviews.length >= 5;
+  return <section className="reviews-section" aria-label="Reseñas de clientes">
+    <div className="rv-summary">
+      {avg >= 4.5 && <span className="rv-excellent">Excelente</span>}
+      <Stars n={Math.round(avg)} className="rv-summary-stars" />
+      <span className="rv-score">{avg.toFixed(1)} | {reviews.length} {reviews.length === 1 ? 'reseña' : 'reseñas'}</span>
+    </div>
+    {loop
+      ? <div className="rv-viewport"><div className="rv-track">{[0, 1, 2].map(k => reviews.map(r => <ReviewCard key={k + r.name + r.date} r={r} aria-hidden={k > 0 ? true : undefined} />))}</div></div>
+      : <div className="rv-static">{reviews.map(r => <ReviewCard key={r.name + r.date} r={r} />)}</div>}
+  </section>;
+}
 export default function App() {
   return <>
     <main>
@@ -208,6 +256,10 @@ export default function App() {
           <div className="bonus-card-body"><h3>{bonus.title}</h3><p>{bonus.text}</p><div className="bonus-gain"><Check size={18}/><span>{bonus.gain}</span></div><div className="bonus-price"><s>{bonus.value}</s><strong>GRATIS HOY</strong></div></div>
         </article>)}</div>
       </div></section>
+      {(prints.length > 0 || PREVIEW) && <section className="section prints"><div className="content content--1180 section-flow">
+        <SectionTitle lead="Mensajes de personas que ya usaron el material.">Lo que dicen quienes ya lo usan</SectionTitle>
+        <ScrollRail label="Mensajes de clientes" className="prints-rail">{prints.length > 0 ? prints.map((p, i) => <figure className="print-card" key={p.image}><img src={p.image} alt={p.alt || `Mensaje de cliente ${i + 1}`} loading="lazy" /></figure>) : [1, 2, 3].map(n => <figure className="print-card print-card--placeholder" key={n}><img src={pages.cover} alt="" /></figure>)}</ScrollRail>
+      </div></section>}
       <section className="section offer" id="oferta"><div className="content content--720 section-flow">
         <SectionTitle>Deja de improvisar desde hoy</SectionTitle>
         <div className="value-stack" aria-label="Composición del valor de la oferta">
@@ -225,6 +277,7 @@ export default function App() {
         </article>
         <p className="offer-close">{content.offer.noTrick}</p>
       </div></section>
+
 
       <section className="section purchase-safety"><div className="content content--1000 safety-layout">
         <article className="guarantee-card"><ShieldCheck size={54}/><h2>Garantía de {comercial.guaranteeDays} días</h2><p>{comercial.guarantee}</p></article>
