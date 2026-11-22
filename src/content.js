@@ -182,4 +182,4 @@ export const prints = [
 ];
 // Reseñas (depois da oferta). Cada item precisa ser de uma pessoa real que autorizou.
 // Formato: { name: 'Maria P.', date: '14 nov 2026', rating: 5, text: 'texto exato', photo: opcional }
-export const reviews = [];x
+export const reviews = [];
