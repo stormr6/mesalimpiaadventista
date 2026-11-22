@@ -1,3 +1,6 @@
+import print1 from './pages/printsautorizada.png';
+import print2 from './pages/printautorizada2.png';
+import print3 from './pages/printautorizada3.png';
 import cover from './pages/cover.webp';
 import antes from './pages/antes.webp';
 import coverS from './pages/coverS.webp';
@@ -169,3 +172,14 @@ export const bonuses = [
   { image: b4, number: 'BONO 04', title: 'Postres Saludables', text: 'Postres saludables sin ingredientes de origen animal, para cerrar la comida.', gain: 'Tienes un dulce listo para cada ocasión.', value: 'US$ 12,90' }
 ];
 
+// ==== PROVA SOCIAL: somente conteudo REAL e autorizado. Listas vazias = secoes escondidas. ====
+// Prints (antes da oferta). Coloque as imagens em src/pages e importe-as acima.
+// Formato: { image: printUrl, alt: 'Mensaje de ...' }
+export const prints = [
+  { image: print1, alt: 'Mensaje de Carolina Giraldo sobre el recetario' },
+  { image: print2, alt: 'Mensaje de Sofía Vergara sobre el recetario' },
+  { image: print3, alt: 'Mensaje de Andrea Echeverri sobre el recetario' }
+];
+// Reseñas (depois da oferta). Cada item precisa ser de uma pessoa real que autorizou.
+// Formato: { name: 'Maria P.', date: '14 nov 2026', rating: 5, text: 'texto exato', photo: opcional }
+export const reviews = [];x
