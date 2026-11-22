@@ -1,4 +1,4 @@
-﻿
+
 :root{
   --bg:#fcfaf6;
   --surface:#fff;
@@ -151,3 +151,38 @@ a{color:inherit}
 @media(min-width:561px){.gallery-card{flex-basis:400px}}
 .comparison{aspect-ratio:3/4}
 .bonus-book img{aspect-ratio:3/4}.bonus-page{aspect-ratio:3/4}
+
+/* ===== Prints (antes da oferta) ===== */
+.prints{background:var(--tint)}
+.prints-rail .rail{gap:20px;padding-inline:20px}
+.print-card{flex:0 0 min(85vw,420px);margin:0;display:flex;align-items:center;justify-content:center;scroll-snap-align:center}
+.print-card img{width:100%;height:auto;max-height:500px;object-fit:contain;border-radius:12px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+
+/* ===== Reseñas (depois da oferta) ===== */
+.reviews-section{overflow:hidden;padding:48px 16px;background:#fff}
+.rv-summary{display:flex;max-width:72rem;margin:0 auto 32px;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 12px}
+.rv-excellent{color:#0f172a;font-size:1.25rem;font-weight:700}
+.rv-summary-stars,.rv-stars{display:flex;gap:2px}
+.rv-star{color:#facc15;font-size:1.25rem;line-height:1}
+.rv-star--off{color:#e2e8f0}
+.rv-score{color:#0f172a;font-size:1rem;font-weight:600}
+.rv-viewport{width:100%;overflow:hidden}
+.rv-track{display:flex;width:max-content;gap:16px;animation:rv-left 45s linear infinite;will-change:transform}
+.rv-viewport:hover .rv-track{animation-play-state:paused}
+.rv-static{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
+.rv-card{display:flex;width:280px;flex:0 0 auto;flex-direction:column;gap:12px;padding:16px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;box-shadow:0 1px 2px rgba(15,23,42,.05)}
+.rv-head{display:flex;align-items:center;gap:12px;min-width:0}
+.rv-avatar{display:block;width:40px;height:40px;flex:0 0 auto;border-radius:999px;object-fit:cover}
+.rv-initial{display:grid;place-items:center;color:#fff;font-weight:600}
+.rv-meta{min-width:0}
+.rv-meta h3{margin:0;overflow:hidden;color:#0f172a;font:600 .875rem/1.25 var(--font-body);text-overflow:ellipsis;white-space:nowrap}
+.rv-meta p{margin:2px 0 0;color:#64748b;font-size:.75rem}
+.rv-stars .rv-star{font-size:1rem}
+.rv-copy{margin:0;color:#334155;font-size:.875rem;line-height:1.625}
+@keyframes rv-left{from{transform:translateX(0)}to{transform:translateX(-33.333%)}}
+@media(min-width:640px){.reviews-section{padding-block:64px}.rv-summary{margin-bottom:40px}.rv-excellent{font-size:1.5rem}.rv-score{font-size:1.125rem}.rv-card{width:340px;padding:20px}}
+@media(prefers-reduced-motion:reduce){.rv-track{animation-play-state:paused}}
+.print-card--placeholder{min-height:420px;flex-direction:column;gap:10px;padding:24px;border:2px dashed #94a3b8;border-radius:12px;background:rgba(255,255,255,.6);color:#475569;text-align:center}.print-card--placeholder strong{font-size:16px}.print-card--placeholder small{font-size:12px;color:#64748b}
+.rv-card--placeholder{border:2px dashed #cbd5e1;box-shadow:none}
+
+.print-card--placeholder{min-height:0;padding:12px;justify-content:flex-start}.print-card--placeholder img{width:100%;max-height:440px;object-fit:contain;border-radius:8px;box-shadow:0 6px 16px rgba(0,0,0,.18)}
